@@ -28,7 +28,7 @@ export default function ServicesPreview() {
 
   return (
     <section className="max-w-6xl mx-auto mt-20 px-6">
-      <h2 className="text-3xl font-bold text-white mb-12 text-center">
+      <h2 className="text-3xl font-bold mb-12 text-center">
         Our Core Services
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -47,7 +47,7 @@ export default function ServicesPreview() {
           >
             <div className="text-5xl mb-4">{icon}</div>
             <h3 className="text-xl font-semibold mb-2 text-white">{title}</h3>
-            <p className="text-white/90">{description}</p>
+            <p className="">{description}</p>
           </div>
         ))}
       </div>

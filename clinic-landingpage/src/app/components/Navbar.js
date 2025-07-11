@@ -30,7 +30,7 @@ export default function Navbar() {
             className="rounded-xl"
       />
         <Link href="/" className="text-black text-2xl font-extrabold tracking-wide">
-          Patan City Dental Clinic
+          Patan City Dental Clininc
         </Link>
 
         {!mobileMenuOpen && (<ul className="md:flex space-x-6 text-black font-semibold">

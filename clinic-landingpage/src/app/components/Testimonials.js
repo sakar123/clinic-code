@@ -37,7 +37,7 @@ export default function Testimonials() {
 
   return (
     <section className="max-w-4xl mx-auto mt-20 px-6 text-center">
-      <h2 className="text-3xl font-bold text-white mb-12">What Our Clients Say</h2>
+      <h2 className="text-3xl font-bold mb-12">What Our Clients Say</h2>
       <div className="relative min-h-[150px] bg-white/20 backdrop-blur-md rounded-2xl p-8 shadow-lg border border-white/30">
         <AnimatePresence mode="wait">
           <motion.blockquote
@@ -46,7 +46,7 @@ export default function Testimonials() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -50 }}
             transition={{ duration: 0.5 }}
-            className="text-white text-lg italic"
+            className="text-lg italic"
           >
             “{testimonials[current].content}”
             <footer className="mt-4 font-semibold text-blue-200">
