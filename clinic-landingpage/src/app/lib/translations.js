@@ -10,6 +10,7 @@ export const translations = {
       navContact: 'Contact',
       navBookAppointment: 'Book Appointment',
       navGetDirections: 'Get Directions',
+      navBlogs: 'Blogs'
       // add other keys as needed
     },
     ne: {
@@ -22,6 +23,7 @@ export const translations = {
       navContact: 'सम्पर्क',
       navBookAppointment: 'अपोइन्टमेन्ट बुक',
       navGetDirections: 'दिशानिर्देशहरू',
+      navBlogs: 'बलगस'
       // add other keys as needed
     },
   };

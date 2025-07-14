@@ -22,7 +22,7 @@ const services = [
     icon: '✨',
   },
 ];
-
+// random
 export default function ServicesPreview() {
   const [hovered, setHovered] = useState(null);
 
