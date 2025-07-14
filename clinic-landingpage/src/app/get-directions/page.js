@@ -58,12 +58,12 @@ export default function DirectionsPage() {
                 <CardTitle className="text-2xl">Clinic Information</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
-                <h3 className="text-xl font-semibold text-foreground">Kathmandu Dental Experts</h3>
+                <h3 className="text-xl font-semibold text-foreground">Dental Experts</h3>
                 <InfoItem icon={MapPin} href="#map">
                   Patan, Lalitput, Nepal
                 </InfoItem>
                 <InfoItem icon={Phone} href="tel:+97712345678" label="+977-1-2345678" />
-                <InfoItem icon={Mail} href="mailto:info@kathmandudental.com" label="info@kathmandudental.com" />
+                <InfoItem icon={Mail} href="mailto:info@pcdc.com" label="info@kpcdc.com" />
                 <div className="flex items-start text-lg">
                   <Clock className="h-6 w-6 text-primary mt-1 mr-4 flex-shrink-0" />
                   <div>
@@ -93,7 +93,7 @@ export default function DirectionsPage() {
                     allowFullScreen=""
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
-                    title="Google Map of our location in Boudha, Kathmandu"
+                    title="Google Map of our location in Patan, Lalitpur"
                   ></iframe>
                 </div>
               </CardContent>
@@ -111,7 +111,7 @@ export default function DirectionsPage() {
                     <Input
                       id="origin"
                       type="text"
-                      placeholder="e.g., Thamel, Kathmandu"
+                      placeholder="Satdobato, Lalitpur"
                       value={origin}
                       onChange={(e) => setOrigin(e.target.value)}
                       required
