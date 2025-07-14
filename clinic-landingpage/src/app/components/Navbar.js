@@ -21,7 +21,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 h-50 bg-white flex items-center justify-between">
+    <nav className="fixed top-0 left-0 mb-5 right-0 z-50 h-50 bg-white flex items-center justify-between">
       {/* <div className="max-w-7xl mx-auto px-10 py-1 flex items-center justify-between"> */}
       <Image
             src="/images/pcdc-logo.png"
@@ -31,7 +31,7 @@ export default function Navbar() {
             className="rounded-xl"
       />
         <Link href="/" className="text-black text-2xl font-extrabold tracking-wide">
-          Patan City Dental Clininc
+          Patan City Dental Clinic
         </Link>
 
         {!mobileMenuOpen && (<ul className="md:flex space-x-7 text-black font-semibold">
