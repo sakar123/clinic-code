@@ -15,13 +15,14 @@ export default function Navbar() {
     { href: '/about', label: t.navAbout },
     { href: '/services', label: t.navServices },
     { href: '/contact', label: t.navContact },
+    { href: '/blogs', label: t.navBlogs },
     { href: '/book-appointment', label: t.navBookAppointment },
     { href: '/get-directions', label: t.navGetDirections },
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <nav className="fixed top-0 left-0 right-0 z-50 h-50 bg-white flex items-center justify-between">
+      {/* <div className="max-w-7xl mx-auto px-10 py-1 flex items-center justify-between"> */}
       <Image
             src="/images/pcdc-logo.png"
             alt="Patan City Dental Clinic"
@@ -33,7 +34,7 @@ export default function Navbar() {
           Patan City Dental Clininc
         </Link>
 
-        {!mobileMenuOpen && (<ul className="md:flex space-x-6 text-black font-semibold">
+        {!mobileMenuOpen && (<ul className="md:flex space-x-7 text-black font-semibold">
           {navLinks.map(({ href, label }) => (
             <li key={href}>
               <Link href={href} className="hover:text-purple-400 transition">
@@ -44,7 +45,7 @@ export default function Navbar() {
           <li>
             <button
               onClick={toggleLanguage}
-              className="ml-6 px-3 py-1 rounded bg-purple-600 hover:bg-purple-700 transition"
+              className="ml-6 px-3 py-1 right-5 rounded bg-purple-600 hover:bg-purple-700 transition"
               aria-label="Toggle language"
             >
               {language === 'en' ? 'ने' : 'EN'}
@@ -101,7 +102,7 @@ export default function Navbar() {
             </li>
           </ul>
         )}
-      </div>
+      {/* </div> */}
     </nav>
   );
 }
