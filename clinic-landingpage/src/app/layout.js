@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import WhatsAppButton from './components/WhatsAppButton';
 import { SITE_TITLE, SITE_DESCRIPTION } from './lib/config'; 
 import { LanguageProvider } from './context/LanguageContext';
+import { Toaster } from 'sonner'
 
 export const metadata = {
   title: SITE_TITLE,       // Use the imported title
@@ -21,6 +22,7 @@ export default function RootLayout({ children }) {
         <LanguageProvider>
           <Navbar />
           <main className="flex-grow">{children}</main>
+          <Toaster />
           <WhatsAppButton />
           <footer className="bg-white/20 backdrop-blur-md text-center py-6 mt-12 text-white">
             &copy; {new Date().getFullYear()} {metadata.title}
