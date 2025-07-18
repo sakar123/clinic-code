@@ -27,7 +27,7 @@ const InfoItem = ({ icon: Icon, label, href, children }) => (
 
 export default function DirectionsPage() {
   const [origin, setOrigin] = useState('');
-  const destination = "Patan, Lalitpur, Nepal";
+  const destination = "27.66901480628321, 85.32179030264363";
 
   const handleRouteSubmit = (e) => {
     e.preventDefault();
@@ -40,13 +40,13 @@ export default function DirectionsPage() {
   };
 
   return (
-    <div className="bg-background text-foreground mt-40">
+    <>
       <div className="container mx-auto px-4 py-16 md:py-24 mt-40">
         {/* Page Header */}
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold text-primary tracking-tight">Visit Our Clinic</h1>
           <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-            We are conveniently located in the heart of Boudha. Find us using the details below.
+            We are conveniently located in the heart of Lagankhel. Find us using the details below.
           </p>
         </div>
 
@@ -60,16 +60,16 @@ export default function DirectionsPage() {
               <CardContent className="space-y-6">
                 <h3 className="text-xl font-semibold text-foreground">Dental Experts</h3>
                 <InfoItem icon={MapPin} href="#map">
-                  Patan, Lalitput, Nepal
+                  Patan, Lalitpur, Nepal
                 </InfoItem>
-                <InfoItem icon={Phone} href="tel:+97712345678" label="+977-1-2345678" />
+                <InfoItem icon={Phone} href="tel:+97712345678" label="+977-9849220563" />
                 <InfoItem icon={Mail} href="mailto:info@pcdc.com" label="info@kpcdc.com" />
                 <div className="flex items-start text-lg">
                   <Clock className="h-6 w-6 text-primary mt-1 mr-4 flex-shrink-0" />
                   <div>
                     <p className="font-semibold text-foreground">Opening Hours</p>
-                    <p className="text-muted-foreground">Mon – Sat: 9:00 AM – 6:00 PM</p>
-                    <p className="text-muted-foreground">Sunday: Closed</p>
+                    <p className="text-muted-foreground">Sunday – Friday: 9:00 AM – 6:00 PM</p>
+                    <p className="text-muted-foreground">Saturday: Closed</p>
                   </div>
                 </div>
               </CardContent>
@@ -86,7 +86,7 @@ export default function DirectionsPage() {
               <CardContent>
                 <div className="aspect-w-16 aspect-h-10 rounded-lg overflow-hidden border">
                   <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.03481131689!2d85.35881881506227!3d27.71621478278853!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb19771b267c99%3A0x14b3ff2eadd1a3ca!2sBoudhanath%20Stupa!5e0!3m2!1sen!2snp!4v1672582315751!5m2!1sen!2snp"
+                    src="https://www.google.com/maps?q=27.669024959910836,85.32176618189557&hl=en&z=16&output=embed"
                     width="100%"
                     height="450"
                     style={{ border: 0 }}
@@ -141,6 +141,6 @@ export default function DirectionsPage() {
             </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

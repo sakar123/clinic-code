@@ -123,3 +123,7 @@ html {
     @apply bg-background text-foreground;
   }
 }
+
+body {
+  @apply bg-stone-100 text-slate-800;
+}

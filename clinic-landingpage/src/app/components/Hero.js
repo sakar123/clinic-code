@@ -1,40 +1,86 @@
 // components/Hero.js
-'use client'; // Needed for client-side animations/hooks
+'use client';
 
 import { motion } from 'framer-motion';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../lib/config'; 
 import Image from 'next/image';
+import { Phone, ArrowRight } from 'lucide-react'; // Example using lucide-react for icons
+
+// You can keep these in a config file or define them here
+const DENTIST_NAME = 'Dr. Srishti Poudel';
+const DENTIST_TITLE = 'MDS, Perio-orthodontics';
+const WELCOME_HEADLINE = 'Personalized care for your healthy smile.';
+const SITE_DESCRIPTION =
+  'We combine modern technology with a gentle touch to provide comprehensive dental care for your entire family. New patients are always welcome.';
+const PHONE_NUMBER = '+977-9849220563';
 
 export default function Hero() {
   return (
-    <section className="relative top-10 w-full min-h-screen flex items-center justify-center text-white p-6">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="flex flex-col md:flex-row items-center gap-10 backdrop-blur-lg bg-white/10 p-10 rounded-2xl shadow-2xl bg-gradient-to-br from-blue-600 to-purple-700"
-      >
-        <div className="w-full md:w-1/2 flex justify-center">
-          <Image
-            src="/images/TempHeadShot.png"
-            alt="Dr. Srishti Poudel"
-            width={300}
-            height={300}
-            className="rounded-xl"
-          />
-        </div>
+    // Section container: Full width, light gray background for a soft, clean look.
+    // Ample vertical padding (py-20) for spacing, centered content.
+    <section className="w-full bg-slate-50">
+      <div className="container mx-auto flex min-h-screen flex-col items-center justify-center px-6 py-20 md:flex-row md:py-24 lg:gap-x-12">
+        {/* Text content container */}
+        <motion.div
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+          className="w-full max-w-2xl text-center md:w-1/2 md:text-left"
+        >
+          {/* Sub-headline for the dentist's name and title */}
+          <p className="mb-2 text-2xl font-semibold text-sky-600">
+            {DENTIST_NAME}, {DENTIST_TITLE}
+          </p>
 
-        <div className="w-full md:w-1/2 text-center md:text-left">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">{SITE_TITLE}</h1>
-          <p className="text-lg md:text-xl mb-6">{SITE_DESCRIPTION}</p>
-          <a
-            href="/book-appointment"
-            className="inline-block bg-white text-blue-600 font-semibold py-3 px-6 rounded-full hover:bg-blue-100 transition"
-          >
-            Book Appointment
-          </a>
-        </div>
-      </motion.div>
+          {/* Main Headline: Large, bold, and welcoming */}
+          <h1 className="text-4xl font-bold tracking-tight text-slate-800 sm:text-5xl md:text-6xl">
+            {WELCOME_HEADLINE}
+          </h1>
+
+          {/* Description: Softer, lighter font for readability */}
+          <p className="mt-6 text-lg leading-8 text-slate-600">{SITE_DESCRIPTION}</p>
+
+          {/* Call-to-Action Buttons */}
+          <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row md:justify-start">
+            <a
+              href="/book-appointment"
+              className="inline-flex items-center justify-center rounded-lg bg-sky-600 px-6 py-3 text-2xl font-semibold text-white shadow-sm transition-colors hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
+            >
+              Book an Appointment
+            </a>
+            <a
+              href="/services"
+              className="inline-flex items-center gap-x-2 rounded-lg px-6 py-3 text-2xl font-semibold text-slate-700 transition-colors hover:bg-slate-200"
+            >
+              View Our Services <ArrowRight className="h-4 w-4" />
+            </a>
+          </div>
+          
+          {/* Phone number for accessibility and direct contact */}
+          <div className="mt-8 flex items-center justify-center gap-x-3 md:justify-start">
+            <Phone className="h-5 w-5 text-slate-500" />
+            <a href={`tel:${PHONE_NUMBER}`} className="font-semibold text-slate-700 hover:text-sky-600 text-2xl">
+              {PHONE_NUMBER}
+            </a>
+          </div>
+        </motion.div>
+
+        {/* Image container with subtle animation */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
+          className="mt-12 w-full max-w-sm md:mt-0 md:w-1/2 lg:max-w-md"
+        >
+          <Image
+            src="/images/TempHeadShot.png" // Use a professional, warm headshot
+            alt={`A portrait of ${DENTIST_NAME}`}
+            width={500}
+            height={500}
+            className="rounded-full object-cover shadow-xl" // A circular image feels friendly and modern
+            priority // Load the hero image first
+          />
+        </motion.div>
+      </div>
     </section>
   );
 }

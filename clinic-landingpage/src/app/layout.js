@@ -16,7 +16,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <meta charset="utf-8"></meta>
+        <meta charSet="utf-8"></meta>
       </head>
       <body className="bg-white text-gray-900 min-h-screen flex flex-col">
         <LanguageProvider>

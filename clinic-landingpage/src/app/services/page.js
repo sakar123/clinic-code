@@ -5,23 +5,23 @@ import { Button } from "@/components/ui/button";
 // --- SEO Metadata Block ---
 // Next.js automatically handles this plain object for metadata.
 export const metadata = {
-  title: 'Top Dental Services in Kathmandu, Nepal | Expert Dental Care',
-  description: 'Explore a full range of dental services in Kathmandu, from cosmetic dentistry and orthodontics to dental implants and root canals. Book your consultation today for expert care.',
+  title: 'Top Dental Services in Lalitpur, Nepal | Expert Dental Care',
+  description: 'Explore a full range of dental services in Lalitpur, from cosmetic dentistry and orthodontics to dental implants and root canals. Book your consultation today for expert care.',
   keywords: [
-    'Dental Services in Kathmandu',
-    'Kathmandu dental clinic',
+    'Dental Services in Lalitpur',
+    'Lalitpur dental clinic',
     'cosmetic dentistry Nepal',
-    'Invisalign in Kathmandu',
+    'Invisalign in Lalitpur',
     'braces cost in Nepal',
-    'dental implants Kathmandu',
+    'dental implants Lalitpur',
     'root canal treatment Nepal',
-    'teeth whitening Kathmandu',
+    'teeth whitening Lalitpur',
     'pediatric dentistry Nepal',
     'smile makeover Nepal',
   ],
   openGraph: {
-    title: 'Top Dental Services in Kathmandu, Nepal | Expert Dental Care',
-    description: 'Discover comprehensive and affordable dental solutions in the heart of Kathmandu. Your journey to a perfect smile starts here.',
+    title: 'Top Dental Services in Lalitpur, Nepal | Expert Dental Care',
+    description: 'Discover comprehensive and affordable dental solutions in the heart of Lalitpur. Your journey to a perfect smile starts here.',
     url: 'https://yourclinicwebsite.com.np/services', // Replace with your actual URL
     siteName: 'Your Dental Clinic Name', // Replace with your clinic name
     images: [
@@ -41,10 +41,10 @@ const dentalServices = {
   orthodontics: {
     title: "Orthodontics / Braces",
     services: [
-      { name: "Aligners (Invisalign)", description: "Achieve a perfectly straight smile with Ialign clear aligners, the modern alternative to braces. These virtually invisible trays are custom-made to comfortably shift your teeth, offering an effective and discreet orthodontic solution available right here in Kathmandu." },
+      { name: "Aligners (Invisalign)", description: "Achieve a perfectly straight smile with Ialign clear aligners, the modern alternative to braces. These virtually invisible trays are custom-made to comfortably shift your teeth, offering an effective and discreet orthodontic solution available right here in Lalitpur." },
       { name: "Lingual Braces", description: "For the ultimate discreet treatment, lingual braces are placed behind your teeth, making them completely hidden from view. Get the powerful results of traditional braces without anyone knowing you’re undergoing treatment." },
       { name: "Self-ligating Braces", description: "Experience faster and more comfortable treatment with self-ligating braces. Using a specialized clip instead of elastic bands, these braces reduce friction and pressure, often leading to quicker appointments and excellent results." },
-      { name: "Ceramic Braces", description: "Ceramic braces offer the same effectiveness as metal braces but with clear or tooth-colored brackets that blend in with your smile. They are a popular choice for patients in Kathmandu seeking a less noticeable orthodontic option." },
+      { name: "Ceramic Braces", description: "Ceramic braces offer the same effectiveness as metal braces but with clear or tooth-colored brackets that blend in with your smile. They are a popular choice for patients in Lalitpur seeking a less noticeable orthodontic option." },
       { name: "Traditional Metal Braces", description: "A time-tested and highly effective solution, traditional metal braces reliably correct a wide range of orthodontic issues. They remain one of the most durable and cost-effective ways to achieve a straight, healthy smile." },
     ]
   },
@@ -54,10 +54,10 @@ const dentalServices = {
       { name: "Porcelain Veneers", description: "Transform your smile with ultra-thin, custom-made porcelain veneers. They are the perfect solution for correcting chips, stains, or gaps, providing a durable and radiant smile makeover that looks completely natural." },
       { name: "Emax (Porcelain) Crown", description: "Emax crowns are renowned for their superior strength and lifelike appearance, making them an ideal choice for restoring front teeth. These all-ceramic crowns blend seamlessly with your natural teeth for a flawless finish." },
       { name: "Zirconia Crown", description: "Zirconia crowns offer exceptional durability and biocompatibility, perfect for restoring teeth anywhere in the mouth. They provide a strong, long-lasting, and aesthetically pleasing solution for damaged or decayed teeth." },
-      { name: "Teeth Gap Closure", description: "Close unwanted gaps between your teeth using cosmetic bonding or veneers for a more uniform and confident smile. Our experts in Kathmandu will help you choose the best, minimally invasive option for your needs." },
+      { name: "Teeth Gap Closure", description: "Close unwanted gaps between your teeth using cosmetic bonding or veneers for a more uniform and confident smile. Our experts in Lalitpur will help you choose the best, minimally invasive option for your needs." },
       { name: "Smile Makeover", description: "A comprehensive smile makeover combines multiple cosmetic treatments to achieve your dream smile. We create a personalized plan, addressing everything from tooth color to alignment, to deliver stunning, life-changing results." },
       { name: "Tooth-colored Fillings", description: "Repair cavities discreetly with tooth-colored composite fillings. These modern fillings bond directly to your tooth, providing a strong, natural-looking restoration that matches your tooth shade perfectly." },
-      { name: "Teeth Whitening", description: "Brighten your smile safely and effectively with our professional teeth whitening services in Kathmandu. Erase years of stains from coffee, tea, and tobacco, and achieve a dramatically whiter smile in just one visit." },
+      { name: "Teeth Whitening", description: "Brighten your smile safely and effectively with our professional teeth whitening services in Lalitpur. Erase years of stains from coffee, tea, and tobacco, and achieve a dramatically whiter smile in just one visit." },
       { name: "Full-mouth Rehabilitation", description: "For complex dental issues, full-mouth rehabilitation restores the health, function, and beauty of your entire mouth. This comprehensive approach rebuilds your smile from the ground up, ensuring long-term oral health." },
     ]
   },
@@ -89,7 +89,7 @@ const dentalServices = {
     title: "Oral and Maxillofacial Surgery",
     services: [
       { name: "Teeth Extraction", description: "When a tooth is too damaged to be saved, a safe and comfortable extraction is performed. We ensure the process is as painless as possible, providing clear aftercare instructions for a smooth recovery." },
-      { name: "Impacted Wisdom Teeth Extraction", description: "Impacted wisdom teeth can cause pain, infection, and damage to neighboring teeth. Our oral surgeons in Kathmandu specialize in the safe and efficient removal of problematic wisdom teeth to protect your oral health." },
+      { name: "Impacted Wisdom Teeth Extraction", description: "Impacted wisdom teeth can cause pain, infection, and damage to neighboring teeth. Our oral surgeons in Lalitpur specialize in the safe and efficient removal of problematic wisdom teeth to protect your oral health." },
     ]
   },
   pediatric: {
@@ -123,12 +123,12 @@ export default function ServicesPage() {
   const serviceKeys = Object.keys(dentalServices);
 
   return (
-    <div className="bg-background text-foreground ">
+    <>
       {/* Hero Section */}
       <section className="py-20 md:py-32 text-center bg-muted/20 mt-40">
         <div className="container mx-auto px-4">
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-primary">
-            Dental Services in Kathmandu, Nepal
+            Dental Services in Lalitpur, Nepal
           </h1>
           <p className="mt-4 max-w-3xl mx-auto text-lg md:text-xl text-muted-foreground">
             Discover a complete range of expert dental care designed to give you a healthy, confident smile.
@@ -192,7 +192,7 @@ export default function ServicesPage() {
                     <div className="text-center my-16">
                        <Card className="bg-muted/30 p-8 flex flex-col items-center justify-center">
                          <h3 className="text-2xl font-semibold mb-2">Ready for Your Perfect Smile?</h3>
-                         <p className="text-muted-foreground mb-4 max-w-md">Our expert team in Kathmandu is here to help you achieve your dental goals.</p>
+                         <p className="text-muted-foreground mb-4 max-w-md">Our expert team in Lalitpur is here to help you achieve your dental goals.</p>
                          <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
                            Book a Consultation
                          </Button>
@@ -205,6 +205,6 @@ export default function ServicesPage() {
           </main>
         </div>
       </div>
-    </div>
+    </>
   );
 }

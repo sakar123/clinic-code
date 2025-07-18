@@ -76,7 +76,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="bg-background text-foreground min-h-screen ">
+    <>
       <div className="container mx-auto px-4 py-16 md:py-24 mt-40">
         {/* Page Header */}
         <div className="text-center mb-16">
@@ -112,7 +112,7 @@ export default function ContactPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-lg text-muted-foreground mb-4">Patan, Lalitput, Nepal</p>
+                <p className="text-lg text-muted-foreground mb-4">Patan, Lalitpur, Nepal</p>
                 <div className="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden">
                   <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.03481131689!2d85.35881881506227!3d27.71621478278853!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb19771b267c99%3A0x14b3ff2eadd1a3ca!2sBoudhanath%20Stupa!5e0!3m2!1sen!2snp!4v1672582315751!5m2!1sen!2snp"
@@ -122,7 +122,7 @@ export default function ContactPage() {
                     allowFullScreen=""
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
-                    title="Google Map of our location in Patan, Lalitput"
+                    title="Google Map of our location in Patan, Lalitpur"
                   ></iframe>
                 </div>
               </CardContent>
@@ -190,6 +190,6 @@ export default function ContactPage() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
