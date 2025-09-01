@@ -1,5 +1,4 @@
-// /app/directions/page.jsx
-"use client";
+'use client';
 
 import { useState } from 'react';
 import { MapPin, Phone, Mail, Clock, Navigation } from 'lucide-react';
@@ -7,46 +6,45 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-
-// SEO Metadata
-// In a real App Router project, you would export this from a server component
-// or define it in a parent layout.js file.
-// export const metadata = {
-//   title: 'Find Your Way to Our Dental Clinic in Kathmandu | Get Directions',
-//   description: 'Easily navigate to our Kathmandu clinic with maps and contact info. Find directions from your location in Boudha and reach us hassle-free.',
-//   keywords: ['dental clinic directions kathmandu', 'dentist location boudha', 'map to dental clinic nepal'],
-// };
-
-// Reusable component for info items
-const InfoItem = ({ icon: Icon, label, href, children }) => (
-  <a href={href} className="flex items-start text-lg group">
-    <Icon className="h-6 w-6 text-primary mt-1 mr-4 flex-shrink-0" />
-    <span className="text-muted-foreground group-hover:text-primary transition-colors">{children || label}</span>
-  </a>
-);
+import { useLanguage } from '../context/LanguageContext';
+import { translations } from '../lib/translations';
 
 export default function DirectionsPage() {
+  const { language } = useLanguage();
+  const t = translations[language];
+
   const [origin, setOrigin] = useState('');
   const destination = "27.66901480628321, 85.32179030264363";
 
   const handleRouteSubmit = (e) => {
     e.preventDefault();
     if (!origin) {
-      alert("Please enter a starting location.");
+      alert(t.routeOriginAlert);
       return;
     }
     const mapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}`;
     window.open(mapsUrl, '_blank', 'noopener,noreferrer');
   };
 
+  const InfoItem = ({ icon: Icon, label, href, children }) => (
+    <a href={href} className="flex items-start text-lg group">
+      <Icon className="h-6 w-6 text-primary mt-1 mr-4 flex-shrink-0" />
+      <span className="text-muted-foreground group-hover:text-primary transition-colors">
+        {children || label}
+      </span>
+    </a>
+  );
+
   return (
     <>
       <div className="container mx-auto px-4 py-16 md:py-24 mt-40">
         {/* Page Header */}
         <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold text-primary tracking-tight">Visit Our Clinic</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-primary tracking-tight">
+            {t.directionsHeadline}
+          </h1>
           <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-            We are conveniently located in the heart of Lagankhel. Find us using the details below.
+            {t.directionsDescription}
           </p>
         </div>
 
@@ -55,21 +53,39 @@ export default function DirectionsPage() {
           <div className="lg:col-span-2">
             <Card className="border-border/50 shadow-sm sticky top-24">
               <CardHeader>
-                <CardTitle className="text-2xl">Clinic Information</CardTitle>
+                <CardTitle className="text-2xl">
+                  {t.clinicInformation}
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
-                <h3 className="text-xl font-semibold text-foreground">Dental Experts</h3>
+                <h3 className="text-xl font-semibold text-foreground">
+                  {t.dentalExperts}
+                </h3>
                 <InfoItem icon={MapPin} href="#map">
-                  Patan, Lalitpur, Nepal
+                  {t.addressValue}
                 </InfoItem>
-                <InfoItem icon={Phone} href="tel:+97712345678" label="+977-9849220563" />
-                <InfoItem icon={Mail} href="mailto:info@pcdc.com" label="info@kpcdc.com" />
+                <InfoItem
+                  icon={Phone}
+                  href={`tel:${t.PHONE_NUMBER}`}
+                  label={t.PHONE_NUMBER}
+                />
+                <InfoItem
+                  icon={Mail}
+                  href={`mailto:${t.EMAIL}`}
+                  label={t.EMAIL}
+                />
                 <div className="flex items-start text-lg">
                   <Clock className="h-6 w-6 text-primary mt-1 mr-4 flex-shrink-0" />
                   <div>
-                    <p className="font-semibold text-foreground">Opening Hours</p>
-                    <p className="text-muted-foreground">Sunday – Friday: 9:00 AM – 6:00 PM</p>
-                    <p className="text-muted-foreground">Saturday: Closed</p>
+                    <p className="font-semibold text-foreground">
+                      {t.openingHoursTitle}
+                    </p>
+                    <p className="text-muted-foreground">
+                      {t.openingHoursWeekdays}
+                    </p>
+                    <p className="text-muted-foreground">
+                      {t.openingHoursWeekends}
+                    </p>
                   </div>
                 </div>
               </CardContent>
@@ -81,7 +97,9 @@ export default function DirectionsPage() {
             {/* Map Embed */}
             <Card className="border-border/50 shadow-sm">
               <CardHeader>
-                <CardTitle className="text-2xl">Find Us on the Map</CardTitle>
+                <CardTitle className="text-2xl">
+                  {t.mapTitle}
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="aspect-w-16 aspect-h-10 rounded-lg overflow-hidden border">
@@ -93,7 +111,7 @@ export default function DirectionsPage() {
                     allowFullScreen=""
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
-                    title="Google Map of our location in Patan, Lalitpur"
+                    title={t.mapIframeTitle}
                   ></iframe>
                 </div>
               </CardContent>
@@ -102,16 +120,20 @@ export default function DirectionsPage() {
             {/* Route Planner */}
             <Card className="border-border/50 shadow-sm">
               <CardHeader>
-                <CardTitle className="text-2xl">Plan Your Route</CardTitle>
+                <CardTitle className="text-2xl">
+                  {t.routePlannerTitle}
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleRouteSubmit} className="space-y-4">
                   <div>
-                    <Label htmlFor="origin" className="text-base font-medium">Your Starting Location</Label>
+                    <Label htmlFor="origin" className="text-base font-medium">
+                      {t.routeOriginLabel}
+                    </Label>
                     <Input
                       id="origin"
                       type="text"
-                      placeholder="Satdobato, Lalitpur"
+                      placeholder={t.routeOriginPlaceholder}
                       value={origin}
                       onChange={(e) => setOrigin(e.target.value)}
                       required
@@ -120,7 +142,7 @@ export default function DirectionsPage() {
                   </div>
                   <Button type="submit" size="lg" className="w-full">
                     <Navigation className="mr-2 h-5 w-5" />
-                    Show Route
+                    {t.showRoute}
                   </Button>
                 </form>
               </CardContent>
@@ -130,15 +152,17 @@ export default function DirectionsPage() {
 
         {/* Bottom CTA */}
         <div className="text-center mt-24">
-            <h2 className="text-3xl font-bold tracking-tight">Ready for Your Visit?</h2>
-            <p className="mt-3 max-w-2xl mx-auto text-muted-foreground">
-                Book your appointment online today or give us a call. We look forward to seeing you!
-            </p>
-            <div className="mt-8">
-                <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                    Book an Appointment
-                </Button>
-            </div>
+          <h2 className="text-3xl font-bold tracking-tight">
+            {t.ctaHeadline}
+          </h2>
+          <p className="mt-3 max-w-2xl mx-auto text-muted-foreground">
+            {t.ctaSubtext}
+          </p>
+          <div className="mt-8">
+            <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
+              {t.bookNow}
+            </Button>
+          </div>
         </div>
       </div>
     </>

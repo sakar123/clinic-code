@@ -3,17 +3,13 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { Phone, ArrowRight } from 'lucide-react'; // Example using lucide-react for icons
-
-// You can keep these in a config file or define them here
-const DENTIST_NAME = 'Dr. Srishti Poudel';
-const DENTIST_TITLE = 'MDS, Perio-orthodontics';
-const WELCOME_HEADLINE = 'Personalized care for your healthy smile.';
-const SITE_DESCRIPTION =
-  'We combine modern technology with a gentle touch to provide comprehensive dental care for your entire family. New patients are always welcome.';
-const PHONE_NUMBER = '+977-9849220563';
+import { Phone, ArrowRight } from 'lucide-react'; 
+import { translations } from '../lib/translations.js';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Hero() {
+  const { language, toggleLanguage } = useLanguage();
+  const t = translations[language];
   return (
     // Section container: Full width, light gray background for a soft, clean look.
     // Ample vertical padding (py-20) for spacing, centered content.
@@ -28,16 +24,16 @@ export default function Hero() {
         >
           {/* Sub-headline for the dentist's name and title */}
           <p className="mb-2 text-2xl font-semibold text-sky-600">
-            {DENTIST_NAME}, {DENTIST_TITLE}
+            {t.HERO_DENTIST_NAME}, {t.HERO_DENTIST_TITLE}
           </p>
 
           {/* Main Headline: Large, bold, and welcoming */}
           <h1 className="text-4xl font-bold tracking-tight text-slate-800 sm:text-5xl md:text-6xl">
-            {WELCOME_HEADLINE}
+            {t.HERO_WELCOME_HEADLINE}
           </h1>
 
           {/* Description: Softer, lighter font for readability */}
-          <p className="mt-6 text-lg leading-8 text-slate-600">{SITE_DESCRIPTION}</p>
+          <p className="mt-6 text-lg leading-8 text-slate-600">{t.HERO_SITE_DESCRIPTION}</p>
 
           {/* Call-to-Action Buttons */}
           <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row md:justify-start">
@@ -45,21 +41,21 @@ export default function Hero() {
               href="/book-appointment"
               className="inline-flex items-center justify-center rounded-lg bg-sky-600 px-6 py-3 text-2xl font-semibold text-white shadow-sm transition-colors hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
             >
-              Book an Appointment
+              {t.bookNow}
             </a>
             <a
               href="/services"
               className="inline-flex items-center gap-x-2 rounded-lg px-6 py-3 text-2xl font-semibold text-slate-700 transition-colors hover:bg-slate-200"
             >
-              View Our Services <ArrowRight className="h-4 w-4" />
+              {t.viewServices} <ArrowRight className="h-4 w-4" />
             </a>
           </div>
           
           {/* Phone number for accessibility and direct contact */}
           <div className="mt-8 flex items-center justify-center gap-x-3 md:justify-start">
             <Phone className="h-5 w-5 text-slate-500" />
-            <a href={`tel:${PHONE_NUMBER}`} className="font-semibold text-slate-700 hover:text-sky-600 text-2xl">
-              {PHONE_NUMBER}
+            <a href={`tel:${t.PHONE_NUMBER}`} className="font-semibold text-slate-700 hover:text-sky-600 text-2xl">
+              {t.PHONE_NUMBER}
             </a>
           </div>
         </motion.div>
@@ -73,7 +69,7 @@ export default function Hero() {
         >
           <Image
             src="/images/TempHeadShot.png" // Use a professional, warm headshot
-            alt={`A portrait of ${DENTIST_NAME}`}
+            alt={`A portrait of ${t.HERO_DENTIST_NAME}`}
             width={500}
             height={500}
             className="rounded-full object-cover shadow-xl" // A circular image feels friendly and modern

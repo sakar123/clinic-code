@@ -77,23 +77,26 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out ${isScrolled ? 'bg-white/80 backdrop-blur-lg shadow-md' : 'bg-gray-50'}`}>
+      <nav className={`fixed top-0 left-0 pt-10 right-0 z-50 transition-all duration-300 ease-in-out ${isScrolled ? 'bg-white/80 backdrop-blur-lg shadow-md' : 'bg-gray-50'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             
             {/* --- Logo and Clinic Name --- */}
             <Link href="/" className="flex items-center gap-2" onClick={() => setMobileMenuOpen(false)}>
               <Image
-                src="/images/pcdc-logo.png"
-                alt="Patan City Dental Clinic Logo"
-                width={120}
-                height={120}
+                src="/images/belladent-logo.svg"
+                alt="BellaDent Dental Clinic and Implant Center"
+                width={250}
+                height={250}
                 className="rounded-lg"
-                onError={(e) => { e.currentTarget.src = '/images/pcdc-logo.png'; }}
+                onError={(e) => { e.currentTarget.src = '/images/belladent-logo.svg'; }}
               />
               <span className="hidden sm:block text-xl font-bold text-gray-800 tracking-tight">{t.clinicName}</span>
             </Link>
 
+            <span className="hidden sm:block text-base md:text-xl font-bold text-gray-800 tracking-tight">
+              {t.clinicName}
+            </span>
             {/* --- Desktop Navigation --- */}
             <div className="hidden md:flex items-center space-x-8">
               <ul className="flex items-center space-x-6 text-gray-600 font-medium">

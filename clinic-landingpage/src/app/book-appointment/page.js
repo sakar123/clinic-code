@@ -5,8 +5,13 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
+import { useLanguage } from '../context/LanguageContext'
+import { translations } from '../lib/translations'
 
 export default function BookAppointmentPage() {
+  const { language } = useLanguage()
+  const t = translations[language]
+
   const [form, setForm] = useState({
     fullName: '',
     email: '',
@@ -14,7 +19,7 @@ export default function BookAppointmentPage() {
     date: '',
     time: '',
     message: '',
-    botField: '', // Honeypot
+    botField: '',
   })
 
   const [loading, setLoading] = useState(false)
@@ -36,7 +41,7 @@ export default function BookAppointmentPage() {
 
     setLoading(false)
     if (res.ok) {
-      toast.success('Appointment booked successfully!')
+      toast.success(t.toastSuccess)
       setForm({
         fullName: '',
         email: '',
@@ -47,13 +52,13 @@ export default function BookAppointmentPage() {
         botField: '',
       })
     } else {
-      toast.error('Something went wrong. Please try again.')
+      toast.error(t.toastError)
     }
   }
 
   return (
     <section className="realtive max-w-2xl mx-auto px-4 py-20 mt-40">
-      <h1 className="text-4xl font-bold mb-6">Book an Appointment</h1>
+      <h1 className="text-4xl font-bold mb-6">{t.bookNow}</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
@@ -67,7 +72,7 @@ export default function BookAppointmentPage() {
         <Input
           type="text"
           name="fullName"
-          placeholder="Full Name"
+          placeholder={t.formFullNameLabel}
           required
           value={form.fullName}
           onChange={handleChange}
@@ -75,7 +80,7 @@ export default function BookAppointmentPage() {
         <Input
           type="email"
           name="email"
-          placeholder="Email Address"
+          placeholder={t.formEmailLabel }
           required
           value={form.email}
           onChange={handleChange}
@@ -83,7 +88,7 @@ export default function BookAppointmentPage() {
         <Input
           type="tel"
           name="phone"
-          placeholder="Phone Number"
+          placeholder={t.phonePlaceholder}
           required
           value={form.phone}
           onChange={handleChange}
@@ -106,12 +111,12 @@ export default function BookAppointmentPage() {
         </div>
         <Textarea
           name="message"
-          placeholder="Optional message..."
+          placeholder={t.optionalMessage}
           value={form.message}
           onChange={handleChange}
         />
         <Button type="submit" disabled={loading}>
-          {loading ? 'Sending...' : 'Book Appointment'}
+          {loading ? t.sending : t.bookAppointment}
         </Button>
       </form>
     </section>
