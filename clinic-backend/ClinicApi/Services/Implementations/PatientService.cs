@@ -109,17 +109,20 @@ namespace ClinicApi.Services.Implementations
         public async Task<bool> DeletePatientAsync(Guid id)
         {
             var patient = await _patientRepository.GetByIdAsync(id);
-            if (patient == null) return false;
+            if (patient == null)
+            {
+                return false;
+            }
 
             var person = await _personRepository.GetByIdAsync(patient.person_id);
             if (person != null)
             {
+                // By deleting the Person, the cascade rule in the DbContext
+                // will automatically handle the deletion of the associated Patient.
                 _personRepository.Delete(person);
                 await _personRepository.SaveChangesAsync();
             }
 
-            _patientRepository.Delete(patient);
-            await _patientRepository.SaveChangesAsync();
             return true;
         }
     }

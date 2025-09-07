@@ -1,86 +1,167 @@
+using System;
+using System.Collections.Generic;
 using System.Net;
-using System.Text.Json;
-using FluentAssertions;
-using Xunit;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
+using ClinicApi.Models.DTOs;
 using ClinicApi.Tests.Fixtures;
 using ClinicApi.Tests.Utilities;
+using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
+using Xunit;
 
-namespace ClinicApi.Tests.Integration;
-
-public class PrescriptionApiTests : IClassFixture<ApiTestFixture>
+namespace ClinicApi.Tests.Integration
 {
-    private readonly HttpClient _client;
-
-    public PrescriptionApiTests(ApiTestFixture fixture)
+    public class PrescriptionApiTests : IClassFixture<ApiTestFixture>
     {
-        _client = fixture.Client;
-    }
+        private readonly ApiTestFixture _fixture;
 
-    [Fact]
-    public async Task GetAll_WhenCalled_ReturnsOk()
-    {
-        // Arrange
+        public PrescriptionApiTests(ApiTestFixture fixture)
+        {
+            _fixture = fixture;
+        }
 
-        // Act
-        var response = await _client.GetAsync("/api/Prescription");
+        [Fact]
+        public async Task GetPrescriptions_WhenPrescriptionsExist_ReturnsOkAndListOfPrescriptions()
+        {
+            // Arrange
+            await using var scope = _fixture.WebAppFactory.Services.CreateAsyncScope();
+            var context = scope.ServiceProvider.GetRequiredService<Data.DentalClinicContext>();
+            var treatment = await TestDataSeeder.SeedFullTreatmentScenarioAsync(context);
+            await TestDataSeeder.SeedPrescriptionAsync(context, treatment.id);
+            await TestDataSeeder.SeedPrescriptionAsync(context, treatment.id);
 
-        // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-    }
+            // Act
+            var response = await _fixture.Client.GetAsync("/api/Prescription");
 
-    [Fact]
-    public async Task Post_WhenValid_ReturnsOkAndEchoesPayload()
-    {
-        // Arrange
-        var payload = TestDataFactory.Prescription();
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var prescriptions = await response.Content.ReadFromJsonAsync<List<PrescriptionDTO>>(JsonSnakeCaseSerializer.SerializerOptions);
+            prescriptions.Should().NotBeNull();
+            prescriptions.Should().HaveCountGreaterOrEqualTo(2);
+        }
 
-        // Act
-        var response = await _client.PostAsync("/api/Prescription", JsonSnakeCaseContent.From(payload));
+        [Fact]
+        public async Task GetPrescription_WhenIdExists_ReturnsOkAndPrescription()
+        {
+            // Arrange
+            await using var scope = _fixture.WebAppFactory.Services.CreateAsyncScope();
+            var context = scope.ServiceProvider.GetRequiredService<Data.DentalClinicContext>();
+            var treatment = await TestDataSeeder.SeedFullTreatmentScenarioAsync(context);
+            var seededPrescription = await TestDataSeeder.SeedPrescriptionAsync(context, treatment.id);
 
-        // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var body = await response.Content.ReadAsStringAsync();
-        body.Should().NotBeNullOrWhiteSpace();
-    }
+            // Act
+            var response = await _fixture.Client.GetAsync($"/api/Prescription/{seededPrescription.id}");
 
-    [Fact]
-    public async Task GetById_WhenUnknown_ReturnsNotFound()
-    {
-        // Arrange
-        var id = Guid.NewGuid();
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var prescription = await response.Content.ReadFromJsonAsync<PrescriptionDTO>(JsonSnakeCaseSerializer.SerializerOptions);
+            prescription.Should().NotBeNull();
+            prescription!.id.Should().Be(seededPrescription.id);
+        }
 
-        // Act
-        var response = await _client.GetAsync("/api/Prescription/" + id);
+        [Fact]
+        public async Task GetPrescription_WhenIdDoesNotExist_ReturnsNotFound()
+        {
+            // Act
+            var response = await _fixture.Client.GetAsync($"/api/Prescription/{Guid.NewGuid()}");
 
-        // Assert
-        response.StatusCode.Should().BeOneOf(new[] { HttpStatusCode.NotFound, HttpStatusCode.BadRequest, HttpStatusCode.OK });
-        // NOTE: Depending on implementation, unknown id may 404 or 400 (validation) or 200 with null body.
-    }
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
 
-    [Fact]
-    public async Task Put_WhenIdMismatch_ReturnsBadRequestOrUnprocessable()
-    {
-        // Arrange
-        var id = Guid.NewGuid();
-        var payload = TestDataFactory.Prescription();
+        [Fact]
+        public async Task CreatePrescription_WithValidData_ReturnsCreatedAt()
+        {
+            // Arrange
+            await using var scope = _fixture.WebAppFactory.Services.CreateAsyncScope();
+            var context = scope.ServiceProvider.GetRequiredService<Data.DentalClinicContext>();
+            var treatment = await TestDataSeeder.SeedFullTreatmentScenarioAsync(context);
+            
+            var prescriptionDto = new PrescriptionDTO
+            {
+                treatment_id = treatment.id,
+                drug_name = "Amoxicillin",
+                dosage = "500mg",
+                instructions = "Take one tablet twice daily."
+            };
 
-        // Act
-        var response = await _client.PutAsync("/api/Prescription/" + id, JsonSnakeCaseContent.From(payload));
+            // Act
+            var response = await _fixture.Client.PostAsync("/api/Prescription", JsonSnakeCaseSerializer.From(prescriptionDto));
 
-        // Assert
-        response.StatusCode.Should().BeOneOf(new[] { HttpStatusCode.BadRequest, HttpStatusCode.UnprocessableEntity, HttpStatusCode.OK });
-    }
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.Created);
+            var createdPrescription = await response.Content.ReadFromJsonAsync<PrescriptionDTO>(JsonSnakeCaseSerializer.SerializerOptions);
+            createdPrescription.Should().NotBeNull();
+            createdPrescription!.id.Should().NotBeNull();
+            response.Headers.Location.Should().NotBeNull();
+        }
 
-    [Fact]
-    public async Task Delete_WhenUnknownId_ReturnsNotFoundOrNoContent()
-    {
-        // Arrange
-        var id = Guid.NewGuid();
+        [Fact]
+        public async Task CreatePrescription_WithInvalidTreatmentId_ReturnsBadRequest()
+        {
+            // Arrange
+            var prescriptionDto = new PrescriptionDTO
+            {
+                treatment_id = Guid.NewGuid(), // Non-existent ID
+                drug_name = "Ibuprofen",
+                dosage = "200mg"
+            };
 
-        // Act
-        var response = await _client.DeleteAsync("/api/Prescription/" + id);
+            // Act
+            var response = await _fixture.Client.PostAsync("/api/Prescription", JsonSnakeCaseSerializer.From(prescriptionDto));
 
-        // Assert
-        response.StatusCode.Should().BeOneOf(new[] { HttpStatusCode.NotFound, HttpStatusCode.NoContent, HttpStatusCode.OK });
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
+
+        [Fact]
+        public async Task UpdatePrescription_WhenIdExistsAndDataIsValid_ReturnsOk()
+        {
+            // Arrange
+            await using var scope = _fixture.WebAppFactory.Services.CreateAsyncScope();
+            var context = scope.ServiceProvider.GetRequiredService<Data.DentalClinicContext>();
+            var treatment = await TestDataSeeder.SeedFullTreatmentScenarioAsync(context);
+            var seededPrescription = await TestDataSeeder.SeedPrescriptionAsync(context, treatment.id);
+
+            var updateDto = new PrescriptionDTO
+            {
+                id = seededPrescription.id,
+                treatment_id = treatment.id,
+                drug_name = "Updated Drug Name", // Updated value
+                dosage = "1000mg", // Updated value
+                instructions = seededPrescription.instructions
+            };
+
+            // Act
+            var response = await _fixture.Client.PutAsync($"/api/Prescription/{seededPrescription.id}", JsonSnakeCaseSerializer.From(updateDto));
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var updatedPrescription = await response.Content.ReadFromJsonAsync<PrescriptionDTO>(JsonSnakeCaseSerializer.SerializerOptions);
+            updatedPrescription.Should().NotBeNull();
+            updatedPrescription!.drug_name.Should().Be("Updated Drug Name");
+            updatedPrescription.dosage.Should().Be("1000mg");
+        }
+
+        [Fact]
+        public async Task DeletePrescription_WhenIdExists_ReturnsNoContent()
+        {
+            // Arrange
+            await using var scope = _fixture.WebAppFactory.Services.CreateAsyncScope();
+            var context = scope.ServiceProvider.GetRequiredService<Data.DentalClinicContext>();
+            var treatment = await TestDataSeeder.SeedFullTreatmentScenarioAsync(context);
+            var seededPrescription = await TestDataSeeder.SeedPrescriptionAsync(context, treatment.id);
+
+            // Act
+            var response = await _fixture.Client.DeleteAsync($"/api/Prescription/{seededPrescription.id}");
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+
+            // Verify it's actually gone
+            var verifyResponse = await _fixture.Client.GetAsync($"/api/Prescription/{seededPrescription.id}");
+            verifyResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
     }
 }

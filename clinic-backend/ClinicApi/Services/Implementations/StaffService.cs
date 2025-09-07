@@ -155,9 +155,6 @@ namespace ClinicApi.Services.Implementations
                 _personRepository.Delete(person);
                 await _personRepository.SaveChangesAsync();
             }
-
-            _staffRepository.Delete(staff);
-            await _staffRepository.SaveChangesAsync();
             return true;
         }
     }

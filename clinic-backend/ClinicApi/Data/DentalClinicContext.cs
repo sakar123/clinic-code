@@ -16,10 +16,15 @@ namespace ClinicApi.Data
         public DbSet<Staff> Staff { get; set; }
         public DbSet<Patient> Patient { get; set; }
         public DbSet<Appointment> Appointment { get; set; }
+
+		public DbSet<AppointmentStatus> AppointmentStatus { get; set; }
+		public DbSet<ToothStatus> ToothStatus { get; set; }
         public DbSet<Billing> Billing { get; set; }
         public DbSet<BillingLineItem> BillingLineItem { get; set; }
         public DbSet<Tooth> Tooth { get; set; }
         public DbSet<Document> Document { get; set; }
+		public DbSet<DocumentType> DocumentType { get; set; }
+
         public DbSet<Payment> Payment { get; set; }
 
         public DbSet<DiscountType> DiscountType { get; set; }
@@ -118,8 +123,21 @@ namespace ClinicApi.Data
 	                .WithMany(s => s.appointments)
 	                .HasForeignKey(a => a.status_id)
 	                .OnDelete(DeleteBehavior.Cascade);
+					  modelBuilder.Entity<AppointmentStatus>(entity =>
+				modelBuilder.Entity<AppointmentStatus>(entity =>  
+				{
+					// Ensure the 'name' field is unique
+					entity.HasIndex(e => e.name).IsUnique();
+
+				}));
+
+				modelBuilder.Entity<ToothStatus>(entity =>
+				{
+					// Ensure the 'code' field is unique
+					entity.HasIndex(e => e.code).IsUnique();
+				});
 	            // Configure many-to-many relationships through join tables
-	            modelBuilder.Entity<Prescription>()
+			modelBuilder.Entity<Prescription>()
 	                .HasOne(p => p.treatment)
 	                .WithMany(t => t.prescriptions)
 	                .HasForeignKey(p => p.treatment_id)

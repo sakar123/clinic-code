@@ -35,10 +35,10 @@ public class ServiceApiTests : IClassFixture<ApiTestFixture>
         var payload = TestDataFactory.Service();
 
         // Act
-        var response = await _client.PostAsync("/api/Service", JsonSnakeCaseContent.From(payload));
+        var response = await _client.PostAsync("/api/Service", JsonSnakeCaseSerializer.From(payload));
 
         // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.Should().Be(HttpStatusCode.Created);
         var body = await response.Content.ReadAsStringAsync();
         body.Should().NotBeNullOrWhiteSpace();
     }
@@ -65,7 +65,7 @@ public class ServiceApiTests : IClassFixture<ApiTestFixture>
         var payload = TestDataFactory.Service();
 
         // Act
-        var response = await _client.PutAsync("/api/Service/" + id, JsonSnakeCaseContent.From(payload));
+        var response = await _client.PutAsync("/api/Service/" + id, JsonSnakeCaseSerializer.From(payload));
 
         // Assert
         response.StatusCode.Should().BeOneOf(new[] { HttpStatusCode.BadRequest, HttpStatusCode.UnprocessableEntity, HttpStatusCode.OK });

@@ -1,86 +1,116 @@
+using System;
+using System.Collections.Generic;
 using System.Net;
-using System.Text.Json;
-using FluentAssertions;
-using Xunit;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
+using ClinicApi.Models.DTOs;
+using ClinicApi.Models.Entities;
+using ClinicApi.Models.Enumerations;
 using ClinicApi.Tests.Fixtures;
 using ClinicApi.Tests.Utilities;
+using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
+using Xunit;
 
-namespace ClinicApi.Tests.Integration;
-
-public class BillingApiTests : IClassFixture<ApiTestFixture>
+namespace ClinicApi.Tests.Integration
 {
-    private readonly HttpClient _client;
-
-    public BillingApiTests(ApiTestFixture fixture)
+    public class BillingApiTests : IClassFixture<ApiTestFixture>
     {
-        _client = fixture.Client;
-    }
+        private readonly ApiTestFixture _fixture;
 
-    [Fact]
-    public async Task GetAll_WhenCalled_ReturnsOk()
-    {
-        // Arrange
+        public BillingApiTests(ApiTestFixture fixture)
+        {
+            _fixture = fixture;
+        }
 
-        // Act
-        var response = await _client.GetAsync("/api/Billing");
+        [Fact]
+        public async Task GetBillings_WhenBillingsExist_ReturnsOkAndListOfBillings()
+        {
+            // Arrange
+            await using var scope = _fixture.WebAppFactory.Services.CreateAsyncScope();
+            var context = scope.ServiceProvider.GetRequiredService<Data.DentalClinicContext>();
+            var patient = await TestDataSeeder.SeedPatientAsync(context);
+            await TestDataSeeder.SeedBillingAsync(context, patient.id);
+            await TestDataSeeder.SeedBillingAsync(context, patient.id);
 
-        // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-    }
+            // Act
+            var response = await _fixture.Client.GetAsync("/api/Billing");
 
-    [Fact]
-    public async Task Post_WhenValid_ReturnsOkAndEchoesPayload()
-    {
-        // Arrange
-        var payload = TestDataFactory.Billing();
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var billings = await response.Content.ReadFromJsonAsync<List<BillingDTO>>(JsonSnakeCaseSerializer.SerializerOptions);
+            billings.Should().NotBeNull();
+            billings.Should().HaveCountGreaterOrEqualTo(2);
+        }
 
-        // Act
-        var response = await _client.PostAsync("/api/Billing", JsonSnakeCaseContent.From(payload));
+        [Fact]
+        public async Task GetBilling_WhenIdExists_ReturnsOkAndBilling()
+        {
+            // Arrange
+            await using var scope = _fixture.WebAppFactory.Services.CreateAsyncScope();
+            var context = scope.ServiceProvider.GetRequiredService<Data.DentalClinicContext>();
+            var patient = await TestDataSeeder.SeedPatientAsync(context);
+            var seededBilling = await TestDataSeeder.SeedBillingAsync(context, patient.id);
 
-        // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var body = await response.Content.ReadAsStringAsync();
-        body.Should().NotBeNullOrWhiteSpace();
-    }
+            // Act
+            var response = await _fixture.Client.GetAsync($"/api/Billing/{seededBilling.id}");
 
-    [Fact]
-    public async Task GetById_WhenUnknown_ReturnsNotFound()
-    {
-        // Arrange
-        var id = Guid.NewGuid();
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var billing = await response.Content.ReadFromJsonAsync<BillingDTO>(JsonSnakeCaseSerializer.SerializerOptions);
+            billing.Should().NotBeNull();
+            billing!.id.Should().Be(seededBilling.id);
+        }
 
-        // Act
-        var response = await _client.GetAsync("/api/Billing/" + id);
+        [Fact]
+        public async Task CreateBilling_WithValidData_ReturnsCreatedAt()
+        {
+            // Arrange
+            await using var scope = _fixture.WebAppFactory.Services.CreateAsyncScope();
+            var context = scope.ServiceProvider.GetRequiredService<Data.DentalClinicContext>();
+            var patient = await TestDataSeeder.SeedPatientAsync(context);
 
-        // Assert
-        response.StatusCode.Should().BeOneOf(new[] { HttpStatusCode.NotFound, HttpStatusCode.BadRequest, HttpStatusCode.OK });
-        // NOTE: Depending on implementation, unknown id may 404 or 400 (validation) or 200 with null body.
-    }
+            var billingDto = new BillingDTO
+            {
+                patient_id = patient.id,
+                issue_date = DateTime.UtcNow,
+                due_date = DateTime.UtcNow.AddDays(30),
+                total_amount = 250,
+                amount_paid = 100,
+                status = BillStatusEnum.Partial
+            };
 
-    [Fact]
-    public async Task Put_WhenIdMismatch_ReturnsBadRequestOrUnprocessable()
-    {
-        // Arrange
-        var id = Guid.NewGuid();
-        var payload = TestDataFactory.Billing();
+            // Act
+            var response = await _fixture.Client.PostAsync("/api/Billing", JsonSnakeCaseSerializer.From(billingDto));
 
-        // Act
-        var response = await _client.PutAsync("/api/Billing/" + id, JsonSnakeCaseContent.From(payload));
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.Created);
+            var createdBilling = await response.Content.ReadFromJsonAsync<BillingDTO>(JsonSnakeCaseSerializer.SerializerOptions);
+            createdBilling.Should().NotBeNull();
+            createdBilling!.id.Should().NotBeNull();
+            response.Headers.Location.Should().NotBeNull();
+            response.Headers.Location!.ToString().Should().Contain(createdBilling.id.ToString()!);
+        }
 
-        // Assert
-        response.StatusCode.Should().BeOneOf(new[] { HttpStatusCode.BadRequest, HttpStatusCode.UnprocessableEntity, HttpStatusCode.OK });
-    }
+        [Fact]
+        public async Task DeleteBilling_WhenIdExists_ReturnsNoContent()
+        {
+            // Arrange
+            await using var scope = _fixture.WebAppFactory.Services.CreateAsyncScope();
+            var context = scope.ServiceProvider.GetRequiredService<Data.DentalClinicContext>();
+            var patient = await TestDataSeeder.SeedPatientAsync(context);
+            var seededBilling = await TestDataSeeder.SeedBillingAsync(context, patient.id);
 
-    [Fact]
-    public async Task Delete_WhenUnknownId_ReturnsNotFoundOrNoContent()
-    {
-        // Arrange
-        var id = Guid.NewGuid();
+            // Act
+            var response = await _fixture.Client.DeleteAsync($"/api/Billing/{seededBilling.id}");
 
-        // Act
-        var response = await _client.DeleteAsync("/api/Billing/" + id);
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
 
-        // Assert
-        response.StatusCode.Should().BeOneOf(new[] { HttpStatusCode.NotFound, HttpStatusCode.NoContent, HttpStatusCode.OK });
+            // Verify it's actually gone
+            var verifyResponse = await _fixture.Client.GetAsync($"/api/Billing/{seededBilling.id}");
+            verifyResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
+        
     }
 }

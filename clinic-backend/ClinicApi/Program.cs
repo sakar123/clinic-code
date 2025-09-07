@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
-using AutoMapper;
 using ClinicApi.Data;
 using ClinicApi.Data.Repositories;
 using ClinicApi.Services;
@@ -33,8 +32,8 @@ else
 builder.Services.AddControllers();
 
 // Configure DbContext
-builder.Services.AddDbContextPool<DentalClinicContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("clinicDbConnection")));
+// builder.Services.AddDbContextPool<DentalClinicContext>(options =>
+//     options.UseNpgsql(builder.Configuration.GetConnectionString("clinicDbConnection")));
 
 // Register repositories
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
@@ -75,3 +74,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }

@@ -35,10 +35,10 @@ public class SpecialtyApiTests : IClassFixture<ApiTestFixture>
         var payload = TestDataFactory.Specialty();
 
         // Act
-        var response = await _client.PostAsync("/api/Specialty", JsonSnakeCaseContent.From(payload));
+        var response = await _client.PostAsync("/api/Specialty", JsonSnakeCaseSerializer.From(payload));
 
         // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.Should().Be(HttpStatusCode.Created);
         var body = await response.Content.ReadAsStringAsync();
         body.Should().NotBeNullOrWhiteSpace();
     }
@@ -65,7 +65,7 @@ public class SpecialtyApiTests : IClassFixture<ApiTestFixture>
         var payload = TestDataFactory.Specialty();
 
         // Act
-        var response = await _client.PutAsync("/api/Specialty/" + id, JsonSnakeCaseContent.From(payload));
+        var response = await _client.PutAsync("/api/Specialty/" + id, JsonSnakeCaseSerializer.From(payload));
 
         // Assert
         response.StatusCode.Should().BeOneOf(new[] { HttpStatusCode.BadRequest, HttpStatusCode.UnprocessableEntity, HttpStatusCode.OK });

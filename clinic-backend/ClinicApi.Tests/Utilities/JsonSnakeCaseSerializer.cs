@@ -4,7 +4,7 @@ using System.Text.Json;
 
 namespace ClinicApi.Tests.Utilities;
 
-public static class JsonSnakeCaseContent
+public static class JsonSnakeCaseSerializer
 {
     private static readonly JsonSerializerOptions Options = new()
     {

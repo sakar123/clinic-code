@@ -35,10 +35,10 @@ public class RoleApiTests : IClassFixture<ApiTestFixture>
         var payload = TestDataFactory.Role();
 
         // Act
-        var response = await _client.PostAsync("/api/Role", JsonSnakeCaseContent.From(payload));
+        var response = await _client.PostAsync("/api/Role", JsonSnakeCaseSerializer.From(payload));
 
         // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.Should().Be(HttpStatusCode.Created);
         var body = await response.Content.ReadAsStringAsync();
         body.Should().NotBeNullOrWhiteSpace();
     }
@@ -65,7 +65,7 @@ public class RoleApiTests : IClassFixture<ApiTestFixture>
         var payload = TestDataFactory.Role();
 
         // Act
-        var response = await _client.PutAsync("/api/Role/" + id, JsonSnakeCaseContent.From(payload));
+        var response = await _client.PutAsync("/api/Role/" + id, JsonSnakeCaseSerializer.From(payload));
 
         // Assert
         response.StatusCode.Should().BeOneOf(new[] { HttpStatusCode.BadRequest, HttpStatusCode.UnprocessableEntity, HttpStatusCode.OK });

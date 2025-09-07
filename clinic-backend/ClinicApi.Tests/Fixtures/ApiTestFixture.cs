@@ -1,23 +1,23 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net.Http.Headers;
 using ClinicApi.Tests.Utilities;
+using ClinicApi.Tests.Helpers; // Required for ClinicApiWebAppFactory
 
 namespace ClinicApi.Tests.Fixtures;
 
 public class ApiTestFixture : IDisposable
 {
-    private readonly WebApplicationFactory<Program> _factory;
+    // The factory is now of the correct custom type
+    private readonly ClinicApiWebAppFactory _factory;
     public HttpClient Client { get; }
+    
+    // This property allows tests to access the factory for seeding data
+    public WebApplicationFactory<Program> WebAppFactory => _factory;
 
     public ApiTestFixture()
     {
-        _factory = new WebApplicationFactory<Program>()
-            .WithWebHostBuilder(builder =>
-            {
-                // You can override services here for testing if needed.
-                builder.UseSetting("DOTNET_ENVIRONMENT", "Testing");
-                builder.UseSetting("ASPNETCORE_ENVIRONMENT", "Testing");
-            });
+        // Instantiate our custom factory to ensure the database is replaced
+        _factory = new ClinicApiWebAppFactory();
 
         Client = _factory.CreateClient(new WebApplicationFactoryClientOptions
         {
@@ -32,3 +32,4 @@ public class ApiTestFixture : IDisposable
         _factory.Dispose();
     }
 }
+

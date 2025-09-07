@@ -1,8 +1,0 @@
-/Users/sakarpoudel/Desktop/WORK/clinic-code/clinic-backend/ClinicApi/obj/Debug/net8.0/Clinic-Api.csproj.AssemblyReference.cache
-/Users/sakarpoudel/Desktop/WORK/clinic-code/clinic-backend/ClinicApi/obj/Debug/net8.0/Clinic-Api.GeneratedMSBuildEditorConfig.editorconfig
-/Users/sakarpoudel/Desktop/WORK/clinic-code/clinic-backend/ClinicApi/obj/Debug/net8.0/Clinic-Api.AssemblyInfoInputs.cache
-/Users/sakarpoudel/Desktop/WORK/clinic-code/clinic-backend/ClinicApi/obj/Debug/net8.0/Clinic-Api.AssemblyInfo.cs
-/Users/sakarpoudel/Desktop/WORK/clinic-code/clinic-backend/ClinicApi/obj/Debug/net8.0/Clinic-Api.csproj.CoreCompileInputs.cache
-/Users/sakarpoudel/Desktop/WORK/clinic-code/clinic-backend/ClinicApi/obj/Debug/net8.0/Clinic-Api.MvcApplicationPartsAssemblyInfo.cs
-/Users/sakarpoudel/Desktop/WORK/clinic-code/clinic-backend/ClinicApi/obj/Debug/net8.0/Clinic-Api.MvcApplicationPartsAssemblyInfo.cache
-/Users/sakarpoudel/Desktop/WORK/clinic-code/clinic-backend/ClinicApi/obj/Debug/net8.0/Clinic-Api.sourcelink.json

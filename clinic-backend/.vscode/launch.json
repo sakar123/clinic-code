@@ -6,7 +6,7 @@
 	      "type": "coreclr",
 	      "request": "launch",
 	      "preLaunchTask": "build",
-	      "program": "${workspaceFolder}/ClinicApi/bin/Debug/net8.0/ClinicApi.dll",
+	      "program": "${workspaceFolder}/ClinicApi/bin/Debug/net9.0/ClinicApi.dll",
 	      "args": [],
 	      "cwd": "${workspaceFolder}/ClinicApi",
 	      "stopAtEntry": false,
